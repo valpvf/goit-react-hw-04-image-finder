@@ -1,6 +1,6 @@
 import PT from 'prop-types';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 const modalRoot = document.querySelector('#modal-root');
@@ -15,12 +15,16 @@ const Modal = ({ modalData, closeModal }) => {
   const handleCloseEsc = useCallback(
     e => {
       if (e.code === 'Escape') closeModal();
-      window.removeEventListener('keydown', handleCloseEsc);
     },
     [closeModal]
   );
 
-  window.addEventListener('keydown', handleCloseEsc);
+  useEffect(() => {
+    window.addEventListener('keydown', handleCloseEsc);
+    return () => {
+      window.removeEventListener('keydown', handleCloseEsc);
+    };
+  }, [handleCloseEsc]);
 
   return createPortal(
     <div className="Overlay" onClick={handleBackdropClick}>
