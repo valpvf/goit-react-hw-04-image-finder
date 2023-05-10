@@ -1,37 +1,33 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PT from 'prop-types';
 
-class Searchbar extends Component {
-  state = {
-    input: '',
-  };
+const Searchbar = ({ setQuery }) => {
+  const [input, setInput] = useState('');
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.setQuery(this.state.input);
+    setQuery(input);
   };
 
-  render() {
-    return (
-      <header className="Searchbar">
-        <form className="SearchForm" onSubmit={this.handleSubmit}>
-          <input
-            className="SearchForm-input"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={this.state.input}
-            onChange={e => this.setState({ input: e.target.value })}
-          />
-          <button type="submit" className=".SearchForm-button">
-            <span className="button-label">Search</span>
-          </button>
-        </form>
-      </header>
-    );
-  }
-}
+  return (
+    <header className="Searchbar">
+      <form className="SearchForm" onSubmit={handleSubmit}>
+        <input
+          className="SearchForm-input"
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+        />
+        <button type="submit" className=".SearchForm-button">
+          <span className="button-label">Search</span>
+        </button>
+      </form>
+    </header>
+  );
+};
 
 Searchbar.propTypes = {
   setQuery: PT.func,

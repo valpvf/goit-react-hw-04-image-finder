@@ -1,39 +1,36 @@
 import PT from 'prop-types';
 
-import { Component } from 'react';
+import { useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
 const modalRoot = document.querySelector('#modal-root');
 
-class Modal extends Component {
-  handleBackdropClick = e => {
-    if (e.target === e.currentTarget) this.props.closeModal();
+const Modal = ({ modalData, closeModal }) => {
+  const { src, alt } = modalData;
+
+  const handleBackdropClick = e => {
+    if (e.target === e.currentTarget) closeModal();
   };
 
-  handleCloseEsc = e => {
-    if (e.code === 'Escape') this.props.closeModal();
-  };
+  const handleCloseEsc = useCallback(
+    e => {
+      if (e.code === 'Escape') closeModal();
+      window.removeEventListener('keydown', handleCloseEsc);
+    },
+    [closeModal]
+  );
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleCloseEsc);
-  }
+  window.addEventListener('keydown', handleCloseEsc);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleCloseEsc);
-  }
-
-  render() {
-    const { src, alt } = this.props.modalData;
-    return createPortal(
-      <div className="Overlay" onClick={this.handleBackdropClick}>
-        <div className="Modal">
-          <img src={src} alt={alt} />
-        </div>
-      </div>,
-      modalRoot
-    );
-  }
-}
+  return createPortal(
+    <div className="Overlay" onClick={handleBackdropClick}>
+      <div className="Modal">
+        <img src={src} alt={alt} />
+      </div>
+    </div>,
+    modalRoot
+  );
+};
 
 Modal.propTypes = {
   modalData: PT.objectOf(PT.string),

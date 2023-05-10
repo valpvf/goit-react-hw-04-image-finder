@@ -1,31 +1,18 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
 
-export class App extends Component {
-  state = {
-    query: '',
+export const App = () => {
+  const [search, setSearch] = useState('');
+
+  const setQuery = query => {
+    setSearch(query);
   };
 
-  setQuery = query => {
-    this.setState({ query });
-  };
-
-  render() {
-    return (
-      <div
-      // style={{
-      //   // height: '100vh',
-      //   display: 'flex',
-      //   justifyContent: 'center',
-      //   alignItems: 'center',
-      //   fontSize: 40,
-      //   color: '#010101',
-      // }}
-      >
-        <Searchbar setQuery={this.setQuery} />
-        <ImageGallery query={this.state.query} />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Searchbar setQuery={setQuery} />
+      <ImageGallery query={search} />
+    </div>
+  );
+};
