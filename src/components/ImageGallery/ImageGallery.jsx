@@ -38,7 +38,7 @@ const ImageGallery = ({ query }) => {
   }, [page, search]);
 
   const changePage = () => {
-    setPage(page + 1);
+    setPage(prevPage => prevPage + 1);
   };
 
   const toggleModal = (modalData = null) => {
