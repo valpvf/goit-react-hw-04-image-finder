@@ -19,6 +19,10 @@ const ImageGallery = ({ query }) => {
     const getReceivedGallery = async () => {
       setIsLoading(true);
       try {
+        if (query !== search) {
+          setPage(1);
+          setGallery([]);
+        }
         const data = await getSearchGalleryApi(query, page);
         setGallery(gallery => [...gallery, ...data.hits]);
       } catch (error) {
@@ -31,11 +35,6 @@ const ImageGallery = ({ query }) => {
     if (query !== search || setPage(page) !== page) {
       query && getReceivedGallery();
       setSearch(query);
-    }
-
-    if (query !== search) {
-      setPage(1);
-      setGallery([]);
     }
   }, [page, query]);
 
@@ -57,6 +56,7 @@ const ImageGallery = ({ query }) => {
           <Button onClick={changePage} />
         )}
         {isLoading && <Loader />}
+        {error && <h2>error</h2>}
       </div>
       {modalData && <Modal modalData={modalData} closeModal={toggleModal} />}
     </>

@@ -18,14 +18,4 @@ const getSearchGalleryApi = (query, page = 1) => {
   });
 };
 
-// import PT from 'prop-types';
-// ImageGalleryItem.propTypes = {
-//   gallery: PT.shape({
-//     id: PT.number.isRequired,
-//     largeImageURL: PT.string.isRequired,
-//     tags: PT.string.isRequired,
-//   }),
-//   openModal: PT.func,
-// };
-
 export default getSearchGalleryApi;
