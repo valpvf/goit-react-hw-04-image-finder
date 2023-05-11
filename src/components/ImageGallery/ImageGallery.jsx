@@ -16,27 +16,26 @@ const ImageGallery = ({ query }) => {
   const [modalData, setModalData] = useState(null);
 
   useEffect(() => {
+    if (query !== search) {
+      setPage(1);
+      setSearch(query);
+    }
+  }, [query, search]);
+
+  useEffect(() => {
     const getReceivedGallery = async () => {
       setIsLoading(true);
       try {
-        if (query !== search) {
-          setPage(1);
-          setGallery([]);
-        }
-        const data = await getSearchGalleryApi(query, page);
-        setGallery(gallery => [...gallery, ...data.hits]);
+        const data = await getSearchGalleryApi(search, page);
+        setGallery(prev => (page === 1 ? data.hits : [...prev, ...data.hits]));
       } catch (error) {
         setError(error.message);
       } finally {
         setIsLoading(false);
       }
     };
-
-    if (query !== search || setPage(page) !== page) {
-      query && getReceivedGallery();
-      setSearch(query);
-    }
-  }, [page, query]);
+    search === '' ? setGallery([]) : getReceivedGallery();
+  }, [page, search]);
 
   const changePage = () => {
     setPage(page + 1);
